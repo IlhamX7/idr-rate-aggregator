@@ -91,6 +91,27 @@ curl http://localhost:8080/api/finance/data/latest_idr_rates
 curl http://localhost:8080/api/finance/data/historical_idr_usd
 ``` 
 
+🔢 Personalization (Spread Factor)
+
+GitHub Username: IlhamX7
+
+Spread Factor Calculation:
+
+1. Convert username to lowercase
+
+2. Sum ASCII values
+
+3. (sum % 1000) / 100000.0
+
+Calculated Spread Factor:
+
+```bash
+0.0XXXX
+```
+
+(Automatically computed in SpreadCalculator)
+
+
 ### 5. Testing
 
 Run tests:
@@ -110,6 +131,56 @@ service/
 strategy/
 util/
 ```
+
+🧠 Architectural Rationale
+
+1️⃣ Why Strategy Pattern?
+
+Instead of using conditionals (if/switch), Strategy:
+
+- Enables Open/Closed Principle
+
+- Allows easy extension for new resource types
+
+- Improves maintainability
+
+- Keeps controller clean and decoupled
+
+Adding a new resource only requires a new strategy implementation.
+
+2️⃣ Why FactoryBean for WebClient?
+
+Using FactoryBean:
+
+- Centralizes client configuration
+
+- Avoids direct @Bean definition
+
+- Enables flexible lifecycle management
+
+- Cleanly separates configuration logic from business logic
+
+3️⃣ Why ApplicationRunner instead of @PostConstruct?
+
+ApplicationRunner:
+
+- Ensures execution after full application context initialization
+
+- Cleaner separation of initialization logic
+
+- More testable and explicit than @PostConstruct
+
+- Recommended for startup workflows in Spring Boot
+
+✅ Production Considerations
+
+- Thread-safe immutable in-memory store
+
+- Graceful error handling for missing resources
+
+- Clean separation of concerns
+
+- Unit & integration tests provided
 
 👨‍💻 Author
 ```bash
